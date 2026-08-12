@@ -35,6 +35,18 @@ npm run compile
 npm run package   # 生成 deepfill-x.x.x.vsix
 ```
 
+### 自动发布（GitHub Actions）
+
+推送 `v*` tag 会自动打包并发布到 VS Code Marketplace：
+
+```bash
+# 1. 修改 package.json 的 version（例如 0.2.0）
+# 2. 打 tag 并推送
+git tag v0.2.0 && git push origin v0.2.0
+```
+
+工作流会校验 tag 与 package.json 版本一致，然后通过仓库 Secret `VSCE_PAT` 登录发布（PAT 需勾选 Marketplace > Manage 权限）。
+
 ## 配置项
 
 | 配置 | 默认值 | 说明 |
