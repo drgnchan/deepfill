@@ -1,0 +1,124 @@
+{
+  "name": "deepfill",
+  "displayName": "DeepFill - DeepSeek AI Code Completion",
+  "description": "AI inline code completion powered by the DeepSeek FIM (Fill-In-the-Middle) API",
+  "version": "0.1.0",
+  "publisher": "raymondchanpub",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0B2D5C",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "deepseek",
+    "ai",
+    "completion",
+    "fim",
+    "copilot"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "deepfill.trigger",
+        "title": "DeepFill: Trigger Completion"
+      },
+      {
+        "command": "deepfill.setApiKey",
+        "title": "DeepFill: Set API Key"
+      },
+      {
+        "command": "deepfill.toggle",
+        "title": "DeepFill: Enable / Disable"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "deepfill.trigger",
+        "key": "alt+\\",
+        "mac": "alt+\\",
+        "when": "editorTextFocus && !editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "DeepFill",
+      "properties": {
+        "deepfill.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "DeepSeek API key. Prefer the `DeepFill: Set API Key` command (stored in secret storage); this setting is a fallback. Get a key at https://platform.deepseek.com/api_keys"
+        },
+        "deepfill.baseUrl": {
+          "type": "string",
+          "default": "https://api.deepseek.com/beta",
+          "markdownDescription": "DeepSeek API base URL. FIM requires the `/beta` base URL. Change this if you use a proxy."
+        },
+        "deepfill.model": {
+          "type": "string",
+          "default": "deepseek-v4-pro",
+          "description": "Model ID used for FIM completion."
+        },
+        "deepfill.maxTokens": {
+          "type": "number",
+          "default": 256,
+          "minimum": 16,
+          "maximum": 4096,
+          "description": "Maximum number of tokens to generate (API cap: 4096)."
+        },
+        "deepfill.temperature": {
+          "type": "number",
+          "default": 0.2,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Sampling temperature. Lower = more deterministic."
+        },
+        "deepfill.prefixLength": {
+          "type": "number",
+          "default": 4000,
+          "description": "Max characters sent as the FIM prefix (text before the cursor)."
+        },
+        "deepfill.suffixLength": {
+          "type": "number",
+          "default": 1024,
+          "description": "Max characters sent as the FIM suffix (text after the cursor)."
+        },
+        "deepfill.debounceMs": {
+          "type": "number",
+          "default": 300,
+          "minimum": 100,
+          "maximum": 5000,
+          "description": "Debounce delay in milliseconds after typing before a completion request fires."
+        },
+        "deepfill.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable DeepFill completions."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "npm run check-types && node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "npm run check-types && node esbuild.js --production && vsce package",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^2.24.0",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.4.0"
+  }
+}
